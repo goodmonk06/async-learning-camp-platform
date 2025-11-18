@@ -1,160 +1,350 @@
-# 非同期ブートキャンププラットフォーム
+# Async Learning Camp Platform
 
-合宿・講座・サロンをひとまとめに扱える学習基盤です。AIフィードバック機能を搭載し、効率的な学習運営をサポートします。
+A comprehensive learning management platform for bootcamps, online courses, and corporate training programs. Features AI-powered feedback, camp curriculum design assistance, and mentor review workflows.
 
-## 特徴
+## 📋 Overview
 
-- **統合管理**: オフライン合宿、オンライン講座、企業研修を一つのプラットフォームで管理
-- **AIフィードバック**: OpenAI APIを活用した自動フィードバック生成
-- **柔軟な設計**: モジュール・ミッション方式で多様な学習形態に対応
-- **メンターサポート**: 専用のレビュー画面でメンターが効率的にフィードバック可能
-- **AI設計支援**: 目標・期間・対象者を入力するだけでキャンプカリキュラムを自動生成
+This platform enables educators to run asynchronous learning programs with structured modules and missions. Key differentiators include:
 
-## 技術スタック
+- **AI-Powered Feedback**: Automatic feedback generation using OpenAI API for instant student guidance
+- **Camp Designer**: AI-assisted curriculum generation from learning goals
+- **Flexible Architecture**: Support for bootcamps, online courses, corporate training, and learning communities
+- **Mentor Tools**: Dedicated review interface for efficient feedback management
+- **Type-Safe API**: End-to-end type safety with tRPC
 
-- **フロントエンド**: Next.js 14 (App Router) + TypeScript + Tailwind CSS
-- **バックエンド**: tRPC + Prisma
-- **データベース**: PostgreSQL
-- **AI機能**: OpenAI API (GPT-4)
+## 🚀 Tech Stack
 
-## 主な機能
+- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS
+- **Backend**: tRPC, Prisma ORM
+- **Database**: PostgreSQL
+- **AI**: OpenAI API (GPT-4)
+- **Testing**: Vitest, Testing Library
+- **DevOps**: Docker, Docker Compose
 
-### 1. キャンプ管理
-- キャンプの作成・編集・削除
-- モジュール（単元）とミッション（課題）の階層管理
-- 開催中・過去のキャンプ一覧表示
-- 参加者管理（メンター/学習者の役割設定）
+## 🗂️ Domain Model
 
-### 2. ミッション提出とフィードバック
-- 学習者による課題提出
-- **自動AIフィードバック**: 提出と同時にAIが以下を生成
-  - 良かった点
-  - 改善点
-  - 次のステップ提案
-- メンターによる手動レビュー（スコア付与・追加フィードバック）
+```
+Camp (Learning program)
+├── Module (Course section/unit)
+│   └── Mission (Assignment/task)
+│       └── Submission (Student work)
+│           ├── AI Feedback (auto-generated)
+│           └── Mentor Feedback (manual review)
+└── Enrollment (Participant registration)
+    ├── Mentor (instructor role)
+    └── Learner (student role)
+```
 
-### 3. メンターレビュー画面
-- レビュー待ちの提出物を一覧表示
-- AIフィードバックを参考にしながら追加レビュー可能
-- スコア付与とステータス管理
+### Core Entities
 
-### 4. AI設計支援
-- 学習目標、期間、対象者を入力
-- AIがモジュールとミッションを自動生成
-- 生成されたカリキュラムをそのままキャンプとして登録可能
+- **Camp**: Top-level learning program with start/end dates and visibility settings
+- **Module**: Organized sections within a camp (e.g., "Week 1: React Basics")
+- **Mission**: Individual assignments with descriptions, due dates, and AI rubrics
+- **Enrollment**: User participation with role-based access (mentor/learner)
+- **Submission**: Student work submissions with status tracking and feedback
 
-## 用途別の使い方イメージ
+## 🏃 Getting Started
 
-### オフライン合宿（2日〜1週間の集中型）
-- **対象**: プログラミングブートキャンプ、ハッカソン、スキルアップ合宿
-- **使い方**:
-  - 短期集中カリキュラムを設定（例: 2日間で5モジュール）
-  - 各日のミッションを明確化し、即座にフィードバック
-  - メンターが現地でリアルタイムレビュー
-  - 合宿終了後も提出履歴として残る
+### Requirements
 
-### オンライン講座（1ヶ月〜3ヶ月の非同期学習）
-- **対象**: オンラインプログラミングスクール、社会人向けリスキリング講座
-- **使い方**:
-  - 週次または単元ごとにモジュールを設定
-  - 学習者は自分のペースで課題提出
-  - AIが24時間即座にフィードバック提供
-  - メンターは定期的に人間によるレビューを追加
-  - 進捗状況を可視化
+- Node.js 18+
+- PostgreSQL 15+
+- Docker & Docker Compose (optional but recommended)
 
-### 企業研修・社内教育（1週間〜数ヶ月）
-- **対象**: 新卒研修、エンジニア育成プログラム、技術アップデート研修
-- **使い方**:
-  - 企業独自のカリキュラムを設計
-  - 複数部署・チームでの同時進行研修
-  - 提出物とフィードバックの一元管理
-  - メンター（先輩社員）のレビュー負荷を軽減
-  - 研修後の復習資料として活用
+### Quick Start (Docker)
 
-### コミュニティ・サロン（継続的な学習）
-- **対象**: プログラミングコミュニティ、勉強会、継続学習サロン
-- **使い方**:
-  - 長期間のキャンプを設定（3ヶ月〜1年）
-  - 月次テーマでモジュールを追加
-  - メンバー同士での学び合い
-  - 定期的なチャレンジ課題の提供
-  - コミュニティ内のナレッジ共有
+1. **Clone and setup environment**:
+   ```bash
+   git clone <repo-url>
+   cd async-learning-camp-platform
+   cp .env.local.example .env.local
+   ```
 
-## セットアップ
+2. **Configure environment variables** in `.env.local`:
+   ```bash
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/async_learning_camp?schema=public"
+   OPENAI_API_KEY="sk-..."  # Your OpenAI API key
+   ```
 
-### 1. 環境変数の設定
+3. **Start with Docker Compose**:
+   ```bash
+   docker compose up -d
+   ```
 
-`.env`ファイルを作成し、以下を設定：
+4. **Run migrations and seed**:
+   ```bash
+   docker compose exec app npx prisma migrate deploy
+   docker compose exec app npm run db:seed
+   ```
+
+5. **Access the application**:
+   - Application: http://localhost:3000
+   - Database: localhost:5432
+
+### Local Development Setup
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Setup database**:
+   ```bash
+   # Start PostgreSQL (if using Docker)
+   docker compose up postgres -d
+
+   # Generate Prisma client
+   npm run db:generate
+
+   # Push schema to database
+   npm run db:push
+
+   # Seed demo data
+   npm run db:seed
+   ```
+
+3. **Start development server**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Run tests**:
+   ```bash
+   npm test
+   ```
+
+### All-in-One Setup
 
 ```bash
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/async_learning_camp?schema=public"
-
-# OpenAI API
-OPENAI_API_KEY="sk-..."
+npm run setup
 ```
 
-### 2. 依存パッケージのインストール
+This command runs: `npm install && prisma generate && prisma db push && npm run db:seed`
 
+## 📚 Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm start` | Start production server |
+| `npm test` | Run tests once |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run lint` | Run ESLint |
+| `npm run type-check` | Run TypeScript type checking |
+| `npm run db:generate` | Generate Prisma client |
+| `npm run db:push` | Push schema to database (dev) |
+| `npm run db:migrate` | Create and run migrations |
+| `npm run db:seed` | Seed demo data |
+| `npm run db:studio` | Open Prisma Studio |
+| `npm run db:reset` | Reset database (warning: deletes all data) |
+| `npm run docker:up` | Start Docker containers |
+| `npm run docker:down` | Stop Docker containers |
+| `npm run docker:logs` | View application logs |
+| `npm run setup` | Complete setup (install + db + seed) |
+
+## 🎯 Example Flow: Complete Vertical Slice
+
+### Demo Scenario: React Bootcamp
+
+After running `npm run db:seed`, you'll have a fully functional demo with:
+
+**Camp**: "React実践ブートキャンプ 2024"
+- **Module 1**: React基礎
+  - Mission: Reactコンポーネントの作成
+  - Mission: useStateフックの理解
+- **Module 2**: フォームとデータ管理
+  - Mission: フォームバリデーション
+- **Module 3**: APIとの連携
+  - Mission: REST API連携
+
+**Demo Users**:
+- Mentor: `mentor@example.com`
+- Learner 1: `learner1@example.com` (has submitted work)
+- Learner 2: `learner2@example.com`
+
+### Try It Out
+
+1. **View Camps**: Visit http://localhost:3000/camps
+   - See active and past camps
+   - Click on "React実践ブートキャンプ 2024"
+
+2. **Explore Missions**:
+   - View organized modules and missions
+   - Click on any mission to see details
+
+3. **Submit Work**:
+   - Enter submission content in the form
+   - Click "提出する" (Submit)
+   - AI feedback is generated automatically
+
+4. **Mentor Review**: Visit http://localhost:3000/mentor/review
+   - See pending submissions
+   - Add manual feedback and scores
+   - AI feedback is shown as reference
+
+5. **Design New Camp**: Visit http://localhost:3000/camp-designer
+   - Enter learning goal, duration, and target audience
+   - AI generates complete curriculum with modules and missions
+   - Create camp directly from generated design
+
+## 🎓 Use Cases
+
+### 1. Offline Bootcamps (2 days - 1 week)
+**Target**: Intensive programming bootcamps, hackathons, skill-up camps
+
+**How to use**:
+- Create short-duration camps (e.g., 2-day intensive)
+- Structure with 5-10 missions
+- Mentors provide real-time feedback on-site
+- Historical record maintained for reference
+
+**Example**: Weekend React Bootcamp with daily missions and live mentor support
+
+### 2. Online Courses (1-3 months)
+**Target**: Online programming schools, professional reskilling programs
+
+**How to use**:
+- Set up weekly or module-based structure
+- Students submit at their own pace
+- AI provides instant 24/7 feedback
+- Mentors add periodic human review
+- Track progress and engagement
+
+**Example**: 12-week Full-Stack Development Course with async learning
+
+### 3. Corporate Training (1 week - several months)
+**Target**: New hire onboarding, engineer upskilling, tech update training
+
+**How to use**:
+- Design company-specific curriculum
+- Run parallel training across teams
+- Centralized submission and feedback management
+- Reduce mentor workload with AI assistance
+- Reusable training materials
+
+**Example**: Q1 New Engineer Onboarding Program for 20 hires
+
+### 4. Learning Communities (ongoing)
+**Target**: Programming communities, study groups, continuous learning salons
+
+**How to use**:
+- Create long-term camps (3 months - 1 year)
+- Add monthly theme modules
+- Peer learning environment
+- Regular challenge missions
+- Community knowledge sharing
+
+**Example**: Year-long Advanced Frontend Development Community
+
+## 🔑 API Examples
+
+### Create a Camp
+
+```typescript
+const camp = await trpc.camp.create.mutate({
+  title: "Web Development Bootcamp",
+  description: "Learn modern web development in 8 weeks",
+  startDate: new Date("2024-12-01"),
+  endDate: new Date("2025-01-31"),
+  visibility: "public"
+});
+```
+
+### Submit Mission Work
+
+```typescript
+const submission = await trpc.submission.create.mutate({
+  missionId: "mission-123",
+  userId: "user-456",
+  content: "# My Solution\n\n Here's my implementation..."
+});
+// AI feedback is generated automatically
+```
+
+### Generate Camp Curriculum with AI
+
+```typescript
+const design = await trpc.designer.generateDesign.mutate({
+  goal: "Learn React and build production-ready applications",
+  duration: "4 weeks",
+  targetAudience: "Junior developers with JavaScript knowledge"
+});
+
+// Create camp from design
+const camp = await trpc.designer.createFromDesign.mutate({
+  ...design,
+  startDate: new Date("2024-12-01"),
+  endDate: new Date("2024-12-31")
+});
+```
+
+## 🧪 Testing
+
+Tests are written with Vitest and cover:
+
+- **Validation**: Zod schema validation for all entities
+- **Business Logic**: Camp duration calculation, active status checks
+- **AI Integration**: Mock tests for AI design and feedback
+
+Run tests:
 ```bash
-npm install
+npm test                 # Run once
+npm run test:watch       # Watch mode
 ```
 
-### 3. データベースのセットアップ
+Example test:
+```typescript
+it('should validate camp data', () => {
+  const camp = {
+    title: 'React Bootcamp',
+    description: 'Learn React',
+    startDate: new Date('2024-11-01'),
+    endDate: new Date('2024-11-30'),
+    visibility: 'public'
+  };
 
-```bash
-# Prismaクライアントの生成
-npm run db:generate
-
-# データベースにスキーマを反映（開発環境）
-npm run db:push
-
-# または、マイグレーションを作成して実行（本番環境推奨）
-npx prisma migrate dev --name init
+  const result = campSchema.safeParse(camp);
+  expect(result.success).toBe(true);
+});
 ```
 
-### 4. 開発サーバーの起動
+## 🔮 Future Extensions
 
-```bash
-npm run dev
-```
+- [ ] **Authentication**: NextAuth.js integration for user management
+- [ ] **Real-time Updates**: WebSocket/Ably for live notifications
+- [ ] **File Uploads**: Support for image/document submissions
+- [ ] **Discussion Forums**: Mission-specific Q&A and chat
+- [ ] **Progress Dashboard**: Visual analytics for learners and mentors
+- [ ] **Certificates**: Automated certificate generation on completion
+- [ ] **Export Tools**: PDF/CSV export for submissions and feedback
+- [ ] **Mobile App**: React Native companion app
+- [ ] **Video Integration**: Embedded video lessons and recordings
+- [ ] **Peer Review**: Student-to-student feedback workflows
+- [ ] **Gamification**: Points, badges, and leaderboards
+- [ ] **Multi-language**: i18n support for global audiences
 
-ブラウザで [http://localhost:3000](http://localhost:3000) を開いて確認してください。
-
-## 画面構成
-
-- `/` - トップページ
-- `/camps` - キャンプ一覧
-- `/camps/[id]` - キャンプ詳細（モジュール・ミッション一覧）
-- `/missions/[id]` - ミッション詳細・提出画面
-- `/mentor/review` - メンターレビュー画面
-- `/camp-designer` - AI設計支援画面
-
-## データモデル
-
-```
-Camp (キャンプ)
-├── Module (モジュール/単元)
-│   └── Mission (ミッション/課題)
-│       └── Submission (提出物)
-│           └── feedbackMarkdown (AIまたはメンターのフィードバック)
-└── Enrollment (参加登録: mentor/learner)
-```
-
-## 今後の拡張案
-
-- [ ] ユーザー認証（NextAuth.js）
-- [ ] リアルタイム通知（WebSocket/Ably）
-- [ ] 提出物のファイルアップロード
-- [ ] チャット・質問機能
-- [ ] 進捗ダッシュボード
-- [ ] 証明書発行機能
-- [ ] エクスポート機能（PDF/CSV）
-
-## ライセンス
+## 📄 License
 
 MIT
 
-## コントリビューション
+## 🤝 Contributing
 
-プルリクエストを歓迎します！
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📞 Support
+
+For questions or issues:
+- Open an issue on GitHub
+- Check existing documentation
+- Review the demo data for usage examples
+
+---
+
+Built with ❤️ for educators and learners worldwide.
